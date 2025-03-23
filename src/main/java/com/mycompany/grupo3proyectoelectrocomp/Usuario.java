@@ -8,14 +8,14 @@ public class Usuario {
     private String nombre;
     private String clave;
     private boolean activo;
-    private String rol;
+    private Rol rol;
     private String usuario;
     private String codigo;
     static Usuario[] usuarios = new Usuario[20];
     static int numeroUsuarios = 0;
 
     // Metodo Constructor
-    public Usuario(String nombre, String clave, boolean activo, String rol, String usuario, String codigo) {
+    public Usuario(String nombre, String clave, boolean activo, Rol rol, String usuario, String codigo) {
         this.nombre = nombre;
         this.clave = clave;
         this.activo = activo;
@@ -80,7 +80,7 @@ public class Usuario {
 
     public boolean mostrarMenu() {
 
-        if ("administrador".equals(this.getRol().toLowerCase())) {
+        if (getRol() == Rol.Administrador) {
             int opcion;
             do {
                 String[] opcionesAdministrador = {
@@ -139,7 +139,7 @@ public class Usuario {
 
             } while (true);
 
-        } else if ("tecnico".equals(this.getRol().toLowerCase())) {
+        } else if (getRol() == Rol.Tecnico) {
 
             JOptionPane.showMessageDialog(null, "El menu del tecnico se encuentra en construcccion.");
             return false;
@@ -169,12 +169,28 @@ public class Usuario {
         String claveNueva = JOptionPane.showInputDialog("Ingrese la clave de acceso:");
         boolean activoNuevo = JOptionPane.showConfirmDialog(null, "¿El usuario está activo?", "Estado", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
 
-        String[] roles = {"Administrador", "Tecnico"};
-        String rolNuevo = (String) JOptionPane.showInputDialog(null, "Seleccione el rol del usuario:", "Rol de Usuario", JOptionPane.QUESTION_MESSAGE, null, roles, roles[0]);
+//        String[] roles = {"Administrador", "Tecnico"};
+//        String rolNuevo = (String) JOptionPane.showInputDialog(null, "Seleccione el rol del usuario:", "Rol de Usuario", JOptionPane.QUESTION_MESSAGE, null, roles, roles[0]);
+        String opcionesRoles[] = {"Administrador","Tecnico"};
+
+        int numeroRol = JOptionPane.showOptionDialog(null, "Seleccione el rol del usuario", "Rol de usuario", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, opcionesRoles, opcionesRoles[1]);
+
+        switch (numeroRol) {
+            case 0:
+                rol = Rol.Administrador;
+                break;
+            case 1:
+                rol = Rol.Tecnico;
+                break;
+            default:
+                JOptionPane.showMessageDialog(null,
+                        "Seleccion invalida. Se asignara: Asistente");
+                rol = Rol.Tecnico;
+        }
 
         String codigoNuevo = JOptionPane.showInputDialog("Ingrese el código de usuario (Ej. A-101 o T-101):");
 
-        Usuario nuevoUsuario = new Usuario(nombreNuevo, claveNueva, activoNuevo, rolNuevo, usuarioNuevo, codigoNuevo);
+        Usuario nuevoUsuario = new Usuario(nombreNuevo, claveNueva, activoNuevo, rol, usuarioNuevo, codigoNuevo);
 
         JOptionPane.showMessageDialog(null, "Usuario agregado exitosamente:\n"
                 + "Nombre: " + nuevoUsuario.getNombre() + "\n"
@@ -200,7 +216,7 @@ public class Usuario {
         return activo;
     }
 
-    public String getRol() {
+    public Rol getRol() {
         return rol;
     }
 
@@ -228,7 +244,7 @@ public class Usuario {
         Usuario.numeroUsuarios = numeroUsuarios;
     }
 
-    public void setRol(String rol) {
+    public void setRol(Rol rol) {
         this.rol = rol;
     }
 
@@ -236,5 +252,4 @@ public class Usuario {
         this.usuario = usuario;
     }
 
-    
 }

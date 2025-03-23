@@ -7,10 +7,10 @@ import javax.swing.JOptionPane;
 public class Grupo3ProyectoElectroComp {
 
     public static void main(String[] args) {
-        Usuario usuario1 = new Usuario("Dylan","admin123", true, "Administrador", "admin", "A-101");
-        Usuario usuario2 = new Usuario("Samuel", "sam123", true, "Tecnico", "samp", "T-101");
-        Usuario usuario3 = new Usuario("Juan", "juan123", true, "Tecnico", "juanp", "T-102");
-        Usuario usuario4 = new Usuario("Angeles", "ang123", false, "Tecnico", "angep", "T-103");
+        Usuario usuario1 = new Usuario("Dylan","admin123", true, Rol.Administrador, "admin", "A-101");
+        Usuario usuario2 = new Usuario("Samuel", "sam123", true, Rol.Tecnico, "samp", "T-101");
+        Usuario usuario3 = new Usuario("Juan", "juan123", true, Rol.Tecnico, "juanp", "T-102");
+        Usuario usuario4 = new Usuario("Angeles", "ang123", false, Rol.Tecnico, "angep", "T-103");
         
         Clientes cliente1 = new Clientes("123456", "Alexander", "8888-8888", "dcalderon@ufide.ac.cr", TipoCliente.Premium);
         Clientes cliente2 = new Clientes("1234567", "Helena", "8888-8889", "hfide@ufide.ac.cr", TipoCliente.Oro);
