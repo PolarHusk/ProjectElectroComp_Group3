@@ -10,10 +10,8 @@ public class Clientes {
     private String telefono;
     private String correo;
     private TipoCliente tipo;
-
-    static Clientes[] clientes = new Clientes[30];
-
-    static int numeroClientes = 0;
+    private Ordenes ordenesCliente[] = new Ordenes[4];
+    private int numeroOrdenesCliente = 0;
 
     // Metodo constructor
     public Clientes(String ID, String nombre, String telefono, String correo, TipoCliente tipo) {
@@ -23,61 +21,37 @@ public class Clientes {
         this.correo = correo;
         this.tipo = tipo;
 
-        if (numeroClientes < clientes.length) {
-            clientes[numeroClientes] = this;
-            numeroClientes++;
-        } else {
-            System.out.println("Existe un limite de 30 clientes");
-        }
     }
 
     public Clientes() {
     }
 
     // Comportamientos
-    public static void mostrarClientes() {
-        for (int i = 0; i < numeroClientes; i++) {
-            Clientes cliente = clientes[i];
-            System.out.println("ID: " + cliente.ID + "\nNombre completo: " + cliente.nombre + "\nTelefono: " + cliente.telefono + "\nCorreo: " + cliente.correo + "\nTipo Cliente: " + cliente.tipo + "#################\n");
+    public boolean agregarOrden(Ordenes orden) {
+        if (numeroOrdenesCliente < 4) {
+            ordenesCliente[numeroOrdenesCliente] = orden;
+            numeroOrdenesCliente++;
+            return true;
+        } else {
+            return false;
         }
     }
 
-    public void agregarCliente() {
-
-        String nombreNuevo = JOptionPane.showInputDialog("Ingrese el nombre del cliente: ");
-        setNombre(nombreNuevo);
-
-        String telefonoNuevo = JOptionPane.showInputDialog("Ingrese el Numero de Telefono: ");
-        setTelefono(telefonoNuevo);
-
-        String correoNuevo = JOptionPane.showInputDialog("Ingrese su correo: ");
-        setCorreo(correoNuevo);
-
-        setTipoCliente();
-
-        Clientes nuevoCliente = new Clientes(this.ID, this.nombre, this.telefono, this.correo, this.tipo);
-
-        JOptionPane.showMessageDialog(null,
-                """
-                Cliente Agregado
-                ID: """ + nuevoCliente.ID + "\n"
-                + "Nombre: " + nuevoCliente.nombre + "\n"
-                + "Teléfono: " + nuevoCliente.telefono + "\n"
-                + "Correo: " + nuevoCliente.correo + "\n"
-                + "Tipo: " + nuevoCliente.tipo);
+    public String mostrarInfo() {
+        return "ID: " + ID + "\nNombre completo: " + nombre + "\nTelefono: " + telefono + "\nCorreo: " + correo + "\nTipo Cliente: " + tipo + "\n#################";
 
     }
-
-    public Clientes buscarIDCliente(String ID) {
-        for (int i = 0; i < numeroClientes; i++) {
-            if (clientes[i].ID.equals(ID)) {
-                return clientes[i];
-            }
-        }
-        return null;
-    }
+    
 
     // Getter y Setter
+    public int getNumeroOrdenes() {
+        return numeroOrdenesCliente;
+    }
+
+    public Ordenes[] getOrdenesCliente() {
+        return ordenesCliente;
+    }
+
     public String getID() {
         return ID;
 
@@ -91,50 +65,12 @@ public class Clientes {
         return correo;
     }
 
-    public static int getNumeroClientes() {
-        return numeroClientes;
-    }
-
     public String getTelefono() {
         return telefono;
     }
 
     public TipoCliente getTipo() {
         return tipo;
-    }
-    
-    
-
-    public void setID() {
-        String IDEntrada = JOptionPane.showInputDialog("Ingrese el ID del Cliente: ");
-        if (buscarIDCliente(IDEntrada) != null) {
-            JOptionPane.showMessageDialog(null, "El ID del Cliente ya se encuentra registrado");
-            String[] opcionesAgregarCliente = {
-                "Agregar Otro Cliente",
-                "Cancelar"
-            };
-            int opcion = JOptionPane.showOptionDialog(null,
-                    "Selecciona una opción",
-                    "ID ya registrado",
-                    JOptionPane.DEFAULT_OPTION,
-                    JOptionPane.INFORMATION_MESSAGE,
-                    null,
-                    opcionesAgregarCliente,
-                    opcionesAgregarCliente[0]);
-            switch (opcion) {
-
-                case 0:
-                    setID();
-                    break;
-
-                case 1:
-                    JOptionPane.showMessageDialog(null, "Cancelando...");
-                    break;
-            }
-        } else {
-            this.ID = IDEntrada;
-            agregarCliente();
-        }
     }
 
     public void setNombre(String nombre) {
@@ -176,29 +112,21 @@ public class Clientes {
     }
 
     public TipoCliente setTipoCliente() {
-        String[] opciones = {"premium", "platino", "oro"};
-        String opcion = (String) JOptionPane.showInputDialog(
-                null,
-                "Seleccione el tipo de cliente:",
-                "Tipo de Cliente",
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                opciones,
-                opciones[0]
-        );
+        String opciones[] = {"premium", "platino", "oro"};
 
-        if (opcion == null) {
-            return null;
-        }
+        int opcion = JOptionPane.showOptionDialog(null, "Seleccione un tipo de suscripcion", "Tipo de suscripcion del cliente", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[2]);
+
         switch (opcion) {
-            case "premium":
+            case 0:
                 return this.tipo = TipoCliente.Premium;
-            case "platino":
+            case 1:
                 return this.tipo = TipoCliente.Platino;
-            case "oro":
+            case 2:
                 return this.tipo = TipoCliente.Oro;
             default:
                 return null;
         }
+
     }
+
 }
