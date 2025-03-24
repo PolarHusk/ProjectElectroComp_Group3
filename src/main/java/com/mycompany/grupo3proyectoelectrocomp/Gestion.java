@@ -1,6 +1,5 @@
 package com.mycompany.grupo3proyectoelectrocomp;
 
-import java.util.Arrays;
 import javax.swing.JOptionPane;
 
 public class Gestion {
@@ -15,11 +14,12 @@ public class Gestion {
     private static int numeroOrdenes = 0;
 
     public static void datosIniciales() {
+
         usuarios[0] = new Usuario("Dylan", "admin123", Rol.Administrador, "admin");
         usuarios[1] = new Usuario("Samuel", "sam123", Rol.Tecnico, "samp");
         usuarios[2] = new Usuario("Juan", "juan123", Rol.Tecnico, "juanp");
         usuarios[3] = new Usuario("Angeles", "ang123", Rol.Tecnico, "angep");
-
+        
         clientes[0] = new Clientes("123456", "Alexander", "8888-8888", "dcalderon@ufide.ac.cr", TipoCliente.Premium);
         clientes[1] = new Clientes("1234567", "Helena", "8888-8889", "hfide@ufide.ac.cr", TipoCliente.Oro);
 
@@ -29,6 +29,16 @@ public class Gestion {
         numeroClientes = 2;
         numeroUsuarios = 4;
         numeroOrdenes = 2;
+
+        for (int i = 0; i < numeroOrdenes; i++) {
+            for (int j = 0; j < numeroClientes; j++) {
+                if (clientes[j].getID().equals(ordenes[i].getCliente().getID())) {
+                    clientes[i].agregarOrden(ordenes[i]);
+                    break;
+                }
+            }
+        }
+
     }
 
     // OPCIONES DEL MENU PARA LA GESTION
@@ -405,8 +415,7 @@ public class Gestion {
         if (clienteSeleccionado != null) {
             boolean agregarOrden = clienteSeleccionado.agregarOrden(ordenes[numeroOrdenes]);
             if (agregarOrden) {
-                System.out.println("Orden para cliente: " + clienteSeleccionado + " creada satisfactoriamente");
-                System.out.println(clienteSeleccionado.getNumeroOrdenes());
+                System.out.println("Orden para cliente: " + clienteSeleccionado.getNombre() + " creada satisfactoriamente");
             } else {
                 System.out.println("El cliente ya tiene 4 órdenes asignadas.");
             }
