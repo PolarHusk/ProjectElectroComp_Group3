@@ -121,20 +121,94 @@ public class Usuario {
         this.activo = activo;
     }
 
-    public void setClave(String clave) {
-        this.clave = clave;
+    public void setClave() {
+
+        while (true) {
+            String claveNueva = JOptionPane.showInputDialog("Ingrese la clave de acceso:");
+
+            if (claveNueva == null) {
+                return;
+            }
+
+            boolean tieneNumero = false;
+            boolean tieneLetra = false;
+
+            for (int i = 0; i < claveNueva.length() && !(tieneNumero && tieneLetra); i++) {
+                char c = claveNueva.charAt(i);
+
+                if (c >= '0' && c <= '9') {
+                    tieneNumero = true;
+                }
+                if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')) {
+                    tieneLetra = true;
+                }
+
+            }
+            if (claveNueva.length() >= 8 && claveNueva.length() <= 16 && tieneNumero && tieneLetra) {
+                String confirmacionClave;
+                boolean clavesCoinciden = false;
+
+                do {
+                    confirmacionClave = JOptionPane.showInputDialog("Confirme su clave:");
+
+                    if (confirmacionClave == null) {
+                        return;
+                    }
+
+                    if (claveNueva.equals(confirmacionClave)) {
+                        JOptionPane.showMessageDialog(null, "Clave establecida con exito.");
+                        this.clave = claveNueva;
+                        JOptionPane.showMessageDialog(null, "Usuario: " + usuario + " ha actualizado la clave de forma correcta");
+                        return;
+                    } else {
+                        String[] opciones = {"Confirmar de nuevo la clave", "Cancelar"};
+                        int opcion = JOptionPane.showOptionDialog(null,
+                                "Las claves no coinciden.",
+                                "Error de Confirmacion",
+                                JOptionPane.DEFAULT_OPTION,
+                                JOptionPane.WARNING_MESSAGE,
+                                null, opciones, opciones[0]);
+
+                        if (opcion == 1) {
+                            return;
+                        }
+                    }
+                } while (!clavesCoinciden);
+
+            } else {
+
+                String opciones[] = {"Agregar Otra Clave", "Cancelar"};
+
+                int opcion = JOptionPane.showOptionDialog(null, """
+                                                                "La clave no cumple con los requisitos minimos:\n"
+                                                                            + Entre 8 y 16 caracteres
+                                                                            + Al menos un n\u00fameron
+                                                                            + Al menos una letra
+                                                                            Error de clave""", "Clave Invalida", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
+                if (opcion == 1) {
+                    return;
+                }
+
+            }
+
+        }
+
     }
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+        JOptionPane.showMessageDialog(null, "Usuario: " + usuario + " se ha actualizado el nombre de forma correcta");
+
     }
 
     public void setRol(Rol rol) {
         this.rol = rol;
     }
 
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
+    public void setUsuario(String nuevoUsuario) {
+        this.usuario = nuevoUsuario;
+        JOptionPane.showMessageDialog(null, "Usuario: " + usuario + " se ha actualizado el usuario de forma correcta.");
+
     }
 
 }

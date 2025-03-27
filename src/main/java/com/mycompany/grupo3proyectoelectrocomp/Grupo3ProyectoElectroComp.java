@@ -3,6 +3,11 @@ package com.mycompany.grupo3proyectoelectrocomp;
 import javax.swing.JOptionPane;
 
 public class Grupo3ProyectoElectroComp {
+    
+// Universidad Fidelitas
+// Group 3 FinalProject
+// SC-202
+// Github: https://github.com/PolarHusk/ProjectElectroComp_Group3
 
     public static void main(String[] args) {
 
