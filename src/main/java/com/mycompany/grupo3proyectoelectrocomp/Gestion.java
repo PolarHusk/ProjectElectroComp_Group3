@@ -19,7 +19,7 @@ public class Gestion {
         usuarios[1] = new Usuario("Samuel", "sam123", Rol.Tecnico, "samp");
         usuarios[2] = new Usuario("Juan", "juan123", Rol.Tecnico, "juanp");
         usuarios[3] = new Usuario("Angeles", "ang123", Rol.Tecnico, "angep");
-        
+
         clientes[0] = new Clientes("123456", "Alexander", "8888-8888", "dcalderon@ufide.ac.cr", TipoCliente.Premium);
         clientes[1] = new Clientes("1234567", "Helena", "8888-8889", "hfide@ufide.ac.cr", TipoCliente.Oro);
 
@@ -57,11 +57,11 @@ public class Gestion {
 
     public static void mostrarUsuarios() {
         if (numeroUsuarios == 0) {
-            JOptionPane.showMessageDialog(null, "No hay empleados registrados.");
+            JOptionPane.showMessageDialog(null, "No hay usuarios registrados.");
             return;
         }
 
-        System.out.println("\n--- LISTA DE EMPLEADOS ---");
+        System.out.println("\n--- LISTA DE USUARIOS ---");
         for (int i = 0; i < numeroUsuarios; i++) {
             System.out.println(usuarios[i].mostrarInfo());
         }
@@ -117,13 +117,15 @@ public class Gestion {
 
         String nombreNuevo = JOptionPane.showInputDialog("Ingrese el nombre completo del cliente: ");
 
+        if (nombreNuevo == null) {
+            return;
+        }
+
         String telefono;
         while (true) {
-            String telefonoNuevo = JOptionPane.showInputDialog("Ingrese el Numero de Telefono: (FORMATO 0000-0000) (No ingrese ningun valor si no posee numero de telefono)");
-
-            if (telefonoNuevo == null || telefonoNuevo.length() == 0) {
-                telefono = "Sin Datos";
-                break;
+            String telefonoNuevo = JOptionPane.showInputDialog("Ingrese el Numero de Telefono: (FORMATO 0000-0000)");
+            if (telefonoNuevo == null) {
+                return;
             } else if (telefonoNuevo.length() == 9 && telefonoNuevo.charAt(4) == '-') {
                 telefono = telefonoNuevo;
                 break;
@@ -136,23 +138,26 @@ public class Gestion {
         String correo;
         while (true) {
             String correoNuevo = JOptionPane.showInputDialog("Ingrese su correo electronico Formato(xxxxx@xxxx.com): ");
-            if (correoNuevo != null && correoNuevo.contains("@")) {
+            if (correoNuevo == null) {
+                return;
+            }
+            if (correoNuevo.contains("@")) {
                 int posicionArroba = correoNuevo.indexOf("@");
                 if (posicionArroba != -1 && correoNuevo.indexOf(".", posicionArroba) > posicionArroba) {
                     correo = correoNuevo;
                     break;
                 }
-            }
+            } else {
+                String opcionesCorreo[] = {"Agregar otro correo", "Cancelar"};
 
-            String opcionesCorreo[] = {"Agregar otro correo", "Cancelar"};
+                int opt = JOptionPane.showOptionDialog(null, "Correo Invalido", "Seleccione una opcion", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, opcionesCorreo, opcionesCorreo[0]);
 
-            int opt = JOptionPane.showOptionDialog(null, "Correo Invalido", "Seleccione una opcion", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, opcionesCorreo, opcionesCorreo[0]);
-
-            switch (opt) {
-                case 0:
-                    continue;
-                case 1:
-                    return;
+                switch (opt) {
+                    case 0:
+                        continue;
+                    case 1:
+                        return;
+                }
             }
         }
 
@@ -200,11 +205,12 @@ public class Gestion {
         for (int i = 0; i < numeroUsuarios; i++) {
             if (usuarios[i].getUsuario().equals(usuarioNuevo)) {
                 JOptionPane.showMessageDialog(null, "Usuario ya agregado al sistema");
-                String opcionesAgregarUsuario[] = {"Agregar Otro Cliente", "Cancelar"};
+                String opcionesAgregarUsuario[] = {"Agregar Otro Usuario", "Cancelar"};
                 int opcion = JOptionPane.showOptionDialog(null, "Selecciona una opcion", "Usuario ya registrado", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, opcionesAgregarUsuario, opcionesAgregarUsuario[0]);
                 switch (opcion) {
                     case 0:
                         agregarUsuario();
+                        return;
                     case 1:
                         JOptionPane.showMessageDialog(null, "Cancelando");
                         return;
@@ -217,6 +223,10 @@ public class Gestion {
         String usuario = usuarioNuevo;
 
         String nombreNuevo = JOptionPane.showInputDialog("Ingrese su nombre completo: ");
+
+        if (nombreNuevo == null) {
+            return;
+        }
 
         String clave = solicitarClave();
         if (clave == null) {
@@ -436,6 +446,166 @@ public class Gestion {
 
     }
 
+    public static void buscarCliente() {
+
+        String clienteBusqueda;
+
+        Clientes clienteEncontrado = null;
+
+        while (true) {
+
+            clienteBusqueda = JOptionPane.showInputDialog(
+                    "Ingrese el ID del cliente a buscar:");
+
+            for (int i = 0; i < numeroClientes; i++) {
+                if (clienteBusqueda.equals(clientes[i].getID())) {
+                    clienteEncontrado = clientes[i];
+                    JOptionPane.showMessageDialog(null,
+                            "Cliente encontrado:\n" + clientes[i].mostrarInfo());
+
+                    break;
+                }
+            }
+
+            if (clienteEncontrado == null) {
+                String opcionesBusquedaCliente[] = {"Ingresar otro ID", "Cancelar"};
+
+                int opcion = JOptionPane.showOptionDialog(
+                        null,
+                        "El cliente con el ID: " + clienteBusqueda + " no se encuentra registrado en el sistema",
+                        "Cliente no encontrado",
+                        JOptionPane.DEFAULT_OPTION,
+                        JOptionPane.WARNING_MESSAGE,
+                        null,
+                        opcionesBusquedaCliente,
+                        opcionesBusquedaCliente[0]);
+                switch (opcion) {
+                    case 0:
+                        continue;
+                    case 1:
+                    case -1:
+                        return;
+                }
+
+            } else { // REVISION
+                Ordenes ordenesCliente[] = clienteEncontrado.getOrdenesCliente();
+
+                int totalOrdenesCliente = clienteEncontrado.getNumeroOrdenes();
+
+                if (totalOrdenesCliente == 0) {
+                    String opciones[] = {"Cancelar"};
+                    int seleccion = JOptionPane.showOptionDialog(null, "Volver al menu?", "Confirmacion", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]);
+                    if (seleccion == 0) {
+                        break;
+                    }
+                } else { // REVISION
+                    for (int i = 0; i < totalOrdenesCliente; i++) {
+                        System.out.println(ordenesCliente[i].mostrarInfo());
+                        return;
+
+                    }
+                }
+
+            }
+        }
+    }
+
+    public static void buscarOrdenServicio() {
+
+        while (true) {
+            int numeroOrdenBusqueda = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el numero de orden a buscar:"));
+
+            for (int i = 0; i < numeroOrdenes; i++) {
+                if (numeroOrdenBusqueda == ordenes[i].getNumeroOrden()) {
+                    JOptionPane.showMessageDialog(null,
+                            "Orden encontrada: \n" + ordenes[i].mostrarInfo());
+                    return;
+                }
+            }
+
+            JOptionPane.showMessageDialog(null, "La orden de servicio con el numero: " + numeroOrdenBusqueda
+                    + " no se encuentra registrado en el sistema.");
+
+            String opcionesBuscarOrden[] = {"Ingresar otro numero", "Cancelar"};
+            int opcion = JOptionPane.showOptionDialog(null, "Orden de Servicio No encontrada", "Escoja una opcion", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, opcionesBuscarOrden, opcionesBuscarOrden[0]);
+
+            switch (opcion) {
+                case 0:
+                    continue;
+                case 1:
+                    return;
+                case -1:
+                    break;
+            }
+
+        }
+    }
+
+    public static void buscarUsuario() {
+        String opcionesBusqueda[] = {"Buscar por Usuario", "Buscar por Codigo"};
+
+        int numeroBusqueda = JOptionPane.showOptionDialog(
+                null,
+                "Seleccione el metodo de busqueda:",
+                "Buscar por: ",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                opcionesBusqueda,
+                opcionesBusqueda[0]);
+
+        switch (numeroBusqueda) {
+            case 0:
+                String nombreBusquedaUsuario = JOptionPane.showInputDialog(
+                        "Ingrese el nombre de usuario a buscar:");
+
+                Usuario usuarioEncontrado = null;
+                for (int i = 0; i < numeroUsuarios; i++) {
+                    if (nombreBusquedaUsuario.equals(usuarios[i].getUsuario())) {
+                        JOptionPane.showMessageDialog(null,
+                                "Usuario encontrado:\n" + usuarios[i].mostrarInfo());
+                        usuarioEncontrado = usuarios[i];
+                        break;
+                    }
+                }
+
+                if (usuarioEncontrado != null) {
+                    actualizacionUsuario(usuarioEncontrado);
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se encontro el usuario registrado");
+                    buscarUsuario();
+                }
+                break;
+
+            case 1:
+                String codigoBusquedaUsuario = JOptionPane.showInputDialog("Ingrese el codigo del usuario: ");
+                usuarioEncontrado = null;
+                for (int i = 0; i < numeroUsuarios; i++) {
+                    if (codigoBusquedaUsuario.equals(usuarios[i].getCodigo())) {
+                        JOptionPane.showMessageDialog(null,
+                                "Usuario encontrado:\n" + usuarios[i].mostrarInfo());
+                        usuarioEncontrado = usuarios[i];
+                        break;
+                    }
+                }
+                if (usuarioEncontrado != null) {
+                    actualizacionUsuario(usuarioEncontrado);
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se encontro el usuario registrado con el codigo: " + codigoBusquedaUsuario);
+                    buscarUsuario();
+                }
+                break;
+            case 2:
+                break;
+            default:
+                break;
+        }
+    }
+
+    public static void generarReportes() {
+        JOptionPane.showMessageDialog(null, "Generacion de reportes se encuentra en construccion");
+    }
+
     public static boolean mostrarMenuAdministrador() {
         int opcion;
         do {
@@ -446,6 +616,10 @@ public class Gestion {
                 "Agregar nuevo cliente",
                 "Agregar nuevo usuario",
                 "Crear orden de servicio",
+                "Buscar un Cliente",
+                "Buscar un Usuario",
+                "Buscar una Orden de Servicio",
+                "Generar reportes",
                 "Cerrar Sesion",
                 "Salir del Sistema",};
             opcion = JOptionPane.showOptionDialog(null, "Menú de Administrador", "Menú",
@@ -481,13 +655,28 @@ public class Gestion {
                     crearOrden();
                     break;
                 case 6:
+                    JOptionPane.showMessageDialog(null, "Buscar un Cliente....");
+                    buscarCliente();
+                    break;
+                case 7:
+                    JOptionPane.showMessageDialog(null, "Buscar un Usuario....");
+                    buscarUsuario();
+                    break;
+                case 8:
+                    JOptionPane.showMessageDialog(null, "Buscar una Orden de Servicio....");
+                    buscarOrdenServicio();
+                    break;
+                case 9:
+                    JOptionPane.showMessageDialog(null, "Generar Reportes....");
+                    generarReportes();
+                    break;
+                case 10:
                     JOptionPane.showMessageDialog(null, "Cerrando sesion....");
                     return true;
 
-                case 7:
+                case 11:
                     JOptionPane.showMessageDialog(null, "Saliendo del sistema....");
                     return false;
-
             }
 
         } while (true);
@@ -543,6 +732,93 @@ public class Gestion {
 
         }
 
+    }
+
+    private static void actualizacionUsuario(Usuario usuarioEncontrado) {
+
+        while (true) {
+
+            String opciones[] = {"Actualizar", "Activar/Desactivar", "Cancelar"};
+            int opt = JOptionPane.showOptionDialog(null,
+                    "Selecciones una accion para el usuario", "Opciones de Usuario", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[2]);
+
+            switch (opt) {
+                case 0:
+                    String opcionesActualizacion[] = {"Nombre Completo", "Usuario", "Clave"};
+
+                    int seleccion = JOptionPane.showOptionDialog(null, "Seleeccione el dato a actualizar", "Actualizacion de datos del usuario", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcionesActualizacion, opcionesActualizacion[0]);
+
+                    switch (seleccion) {
+                        case 0:
+                            String nuevoNombre = JOptionPane.showInputDialog("Ingrese el nombre completo del usuario:");
+                            usuarioEncontrado.setNombre(nuevoNombre);
+                            break;
+                        case 1:
+                            boolean usuarioValido = false;
+                            String nuevoUsuario;
+                            while (!usuarioValido) {
+                                nuevoUsuario = JOptionPane.showInputDialog("Ingrese el nuevo nombre de usuario: ");
+                                boolean usuarioEnArreglo = false;
+                                for (int i = 0; i < numeroUsuarios; i++) {
+                                    if (usuarios[i].getUsuario().equals(nuevoUsuario)) {
+                                        usuarioEnArreglo = true;
+                                        break;
+                                    }
+                                }
+                                if (usuarioEnArreglo) {
+                                    JOptionPane.showMessageDialog(null, "Usuario ya agregado al sistema");
+                                    String opcionesAgregarUsuario[] = {"Agregar Otro Usuario", "Cancelar"};
+                                    int opcion = JOptionPane.showOptionDialog(null, "Selecciona una opcion", "Usuario ya registrado", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, opcionesAgregarUsuario, opcionesAgregarUsuario[0]);
+                                    switch (opcion) {
+                                        case 0:
+                                            continue;
+                                        case 1:
+                                            JOptionPane.showMessageDialog(null, "Cancelando");
+                                            return;
+                                        default:
+                                            JOptionPane.showMessageDialog(null, "ERROR");
+                                    }
+                                } else {
+                                    usuarioEncontrado.setUsuario(nuevoUsuario);
+                                    usuarioValido = true;
+                                }
+                            }
+                            break;
+                        case 2:
+                            usuarioEncontrado.setClave();
+                            break;
+                        default:
+                            return;
+                    }
+                    break;
+                case 1:
+                    if (usuarioEncontrado.getActivo()) {
+                        String desactivarBoton[] = {"Desactivar"};
+
+                        int botonDesactivar = JOptionPane.showOptionDialog(null,
+                                "Desea desactivar el usuario?", "Desactivar usuario", JOptionPane.YES_OPTION, JOptionPane.WARNING_MESSAGE, null, desactivarBoton, null);
+
+                        if (botonDesactivar == 0) {
+                            usuarioEncontrado.setActivo(false);
+                            JOptionPane.showMessageDialog(null, "Usuario: " + usuarioEncontrado.getUsuario() + " se ha desactivado de forma correcta.");
+                        }
+                    } else {
+                        String activarBoton[] = {"Activar"};
+                        int botonActivar = JOptionPane.showOptionDialog(null, "Desea activar el usuario?", "Activar usuario", JOptionPane.YES_OPTION, JOptionPane.INFORMATION_MESSAGE, null, activarBoton, null);
+                        if (botonActivar == 0) {
+                            usuarioEncontrado.setActivo(true);
+                            JOptionPane.showMessageDialog(null, "Usuario: " + usuarioEncontrado.getUsuario() + " se ha activado de forma correcta.");
+                        }
+                    }
+                    break;
+
+                case 2:
+                    return;
+
+                default:
+                    return;
+            }
+        }
     }
 
     public static Usuario[] getUsuarios() {

@@ -36,6 +36,7 @@ public class Clientes {
             return false;
         }
     }
+    
     public String mostrarInfo() {
         return "ID: " + ID + "\nNombre completo: " + nombre + "\nTelefono: " + telefono + "\nCorreo: " + correo + "\nTipo Cliente: " + tipo + "\nNumero de Ordenes registradas: " + numeroOrdenesCliente + "\n#################";
 
