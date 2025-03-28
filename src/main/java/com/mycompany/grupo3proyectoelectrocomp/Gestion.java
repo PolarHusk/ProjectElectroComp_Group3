@@ -356,7 +356,7 @@ public class Gestion {
             usuarioID = JOptionPane.showInputDialog("Ingrese el codigo del tecnico asignado:");
 
             for (int i = 0; i < numeroUsuarios; i++) {
-                if (usuarios[i].getCodigo().equals(usuarioID)) {
+                if (usuarios[i].getCodigo().equals(usuarioID) && usuarios[i].getRol() == Rol.Tecnico) {
                     usuarioAsignado = usuarios[i];
                     break;
                 }
@@ -487,7 +487,7 @@ public class Gestion {
                         return;
                 }
 
-            } else { // REVISION
+            } else {
                 Ordenes ordenesCliente[] = clienteEncontrado.getOrdenesCliente();
 
                 int totalOrdenesCliente = clienteEncontrado.getNumeroOrdenes();
@@ -498,12 +498,26 @@ public class Gestion {
                     if (seleccion == 0) {
                         break;
                     }
-                } else { // REVISION
-                    for (int i = 0; i < totalOrdenesCliente; i++) {
-                        System.out.println(ordenesCliente[i].mostrarInfo());
-                        return;
+                } else {
 
+                    String opciones[] = new String[clienteEncontrado.getNumeroOrdenes() + 1];
+
+                    for (int i = 0; i < opciones.length - 1; i++) {
+                        opciones[i] = clienteEncontrado.getOrdenesCliente()[i].getNumeroOrden() + "";
                     }
+
+                    opciones[opciones.length - 1] = "Cancelar";
+
+                    int ordenSeleccion = JOptionPane.showOptionDialog(null, "Seleccione una orden del cliente para ver detalles", "Ordenes de:" + clienteEncontrado.getNombre(), JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[opciones.length - 1]);
+
+                    if (ordenSeleccion == opciones.length - 1) {
+                        break;
+                    }
+
+                    Ordenes ordenSeleccionada = ordenesCliente[ordenSeleccion];
+
+                    JOptionPane.showMessageDialog(null, "Detalles de la orden:\n" + ordenSeleccionada.mostrarInfo());
+
                 }
 
             }
@@ -609,78 +623,120 @@ public class Gestion {
     public static boolean mostrarMenuAdministrador() {
         int opcion;
         do {
-            String opcionesAdministrador[] = {
-                "Mostrar clientes",
-                "Mostrar usuarios",
-                "Mostrar ordenes de servicio",
-                "Agregar nuevo cliente",
-                "Agregar nuevo usuario",
-                "Crear orden de servicio",
-                "Buscar un Cliente",
-                "Buscar un Usuario",
-                "Buscar una Orden de Servicio",
-                "Generar reportes",
-                "Cerrar Sesion",
-                "Salir del Sistema",};
-            opcion = JOptionPane.showOptionDialog(null, "Menú de Administrador", "Menú",
-                    JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcionesAdministrador, opcionesAdministrador[0]);
+
+            opcion = Integer.parseInt(JOptionPane.showInputDialog("""
+                                                                  BIENVENIDO A LA TIENDA DE ELECTRONICOS ElectroComp
+                                                                                 1- Mostrar clientes
+                                                                                 2- Mostrar usuarios
+                                                                                 3- Mostrar ordenes de servicio
+                                                                                 4- Agregar nuevo cliente
+                                                                                 5- Agregar nuevo usuario
+                                                                                 6- Crear orden de servicio
+                                                                                 7- Buscar un Cliente
+                                                                                 8- Buscar un Usuario
+                                                                                 9- Buscar una Orden de Servicio
+                                                                                 10- Generar reportes
+                                                                                 11- Cerrar Sesion
+                                                                                 12- Salir del Sistema                          
+                                                                  """));
+
             switch (opcion) {
 
-                case 0:
+                case 1:
                     JOptionPane.showMessageDialog(null, "Mostrando Clientes....");
                     mostrarClientes();
                     break;
 
-                case 1:
+                case 2:
                     JOptionPane.showMessageDialog(null, "Mostrando usuarios....");
                     mostrarUsuarios();
                     break;
 
-                case 2:
+                case 3:
                     JOptionPane.showMessageDialog(null, "Mostrando ordenes....");
                     mostrarOrdenes();
                     break;
 
-                case 3:
+                case 4:
                     JOptionPane.showMessageDialog(null, "Agregando nuevo cliente....");
                     agregarCliente();
                     break;
 
-                case 4:
+                case 5:
                     JOptionPane.showMessageDialog(null, "Agregando nuevo usuario....");
                     agregarUsuario();
                     break;
-                case 5:
+                case 6:
                     JOptionPane.showMessageDialog(null, "Creando nueva orden....");
                     crearOrden();
                     break;
-                case 6:
+                case 7:
                     JOptionPane.showMessageDialog(null, "Buscar un Cliente....");
                     buscarCliente();
                     break;
-                case 7:
+                case 8:
                     JOptionPane.showMessageDialog(null, "Buscar un Usuario....");
                     buscarUsuario();
                     break;
-                case 8:
+                case 9:
                     JOptionPane.showMessageDialog(null, "Buscar una Orden de Servicio....");
                     buscarOrdenServicio();
                     break;
-                case 9:
+                case 10:
                     JOptionPane.showMessageDialog(null, "Generar Reportes....");
                     generarReportes();
                     break;
-                case 10:
+                case 11:
                     JOptionPane.showMessageDialog(null, "Cerrando sesion....");
                     return true;
 
-                case 11:
+                case 12:
                     JOptionPane.showMessageDialog(null, "Saliendo del sistema....");
+                    return false;
+                default:
                     return false;
             }
 
         } while (true);
 
+    }
+
+    public static boolean mostrarMenuTecnico() {
+        
+        JOptionPane.showMessageDialog(null, "Menu del tecnico en Construccion. Volviendo al inicio de sesion");
+        return true;
+        
+//        int opcion;
+//        do {
+//
+//            opcion = Integer.parseInt(JOptionPane.showInputDialog("""
+//                                                                  BIENVENIDO A LA TIENDA DE ELECTRONICOS ElectroComp
+//                                                                                 1- Mostrar ordenes de servicio
+//                                                                                 2- Buscar Orden de Servicio
+//                                                                                 3- Cerrar sesion
+//                                                                                 4- Salir del Sistema                         
+//                                                                  """));
+//
+//            switch (opcion) {
+//
+//                case 0:
+//                    JOptionPane.showMessageDialog(null, "Mostrando Ordenes.... ");
+//                    break;
+//
+//                case 1:
+//                    JOptionPane.showMessageDialog(null, "Buscar orden de servicio....");
+//                    mostrarUsuarios();
+//                    break;
+//
+//                case 2:
+//                    JOptionPane.showMessageDialog(null, "Cerrar Sesion....");
+//                    mostrarOrdenes();
+//                    break;
+//                case 3:
+//                    JOptionPane.showMessageDialog(null, "Salir del sistema...");
+//
+//            }
+//        } while (true);
     }
 
     private static String solicitarClave() {
