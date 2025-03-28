@@ -7,7 +7,7 @@ public class Ordenes {
     // Atributos
     private int numeroOrden;
     private Clientes cliente;
-    private Usuario usuario;
+    private Usuario tecnico;
     private TipoDispositivo dispositivo;
     private String marca;
     private String modelo;
@@ -20,7 +20,7 @@ public class Ordenes {
     public Ordenes(Clientes cliente, Usuario usuario, TipoDispositivo dispositivo, String marca, String modelo, String problema) {
 
         this.cliente = cliente;
-        this.usuario = usuario;
+        this.tecnico = usuario;
         this.dispositivo = dispositivo;
         this.marca = marca;
         this.modelo = modelo;
@@ -35,7 +35,7 @@ public class Ordenes {
     public String mostrarInfo() {
         return "Orden número: " + numeroOrden + "\n"
                 + "Nombre del Cliente: " + cliente.getNombre() + "\n"
-                + "Técnico asignado: " + usuario.getNombre() + "\n"
+                + "Técnico asignado: " + tecnico.getNombre() + "\n"
                 + "Dispositivo: " + dispositivo + "\n"
                 + "Marca: " + marca + "\n"
                 + "Modelo: " + modelo + "\n"
@@ -87,7 +87,7 @@ public class Ordenes {
     }
 
     public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+        this.tecnico = usuario;
     }
 
     public void setCliente(Clientes cliente) {
@@ -103,7 +103,7 @@ public class Ordenes {
     }
 
     public Usuario getUsuario() {
-        return usuario;
+        return tecnico;
     }
 
     public String getModelo() {
