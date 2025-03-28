@@ -11,7 +11,7 @@ public class Usuario {
     private String clave;
     private boolean activo;
     private Rol rol;
-    private String usuario;
+    private String tecnico;
     private String codigo;
 
     // Metodo Constructor
@@ -20,7 +20,7 @@ public class Usuario {
         this.clave = clave;
         this.activo = true;
         this.rol = rol;
-        this.usuario = usuario;
+        this.tecnico = usuario;
         this.codigo = generarCodigo(rol);
     }
 
@@ -77,7 +77,7 @@ public class Usuario {
         }
         return "Codigo: # " + codigo + " ,"
                 + "Nombre: " + nombre + " ,"
-                + "Usuario: " + usuario + " ,"
+                + "Usuario: " + tecnico + " ,"
                 + "Rol: " + rol + " ,"
                 + "Clave: " + claveOculta + " .";
 
@@ -94,7 +94,7 @@ public class Usuario {
 
 // Getter y setter
     public String getUsuario() {
-        return usuario;
+        return tecnico;
     }
 
     public String getNombre() {
@@ -158,7 +158,7 @@ public class Usuario {
                     if (claveNueva.equals(confirmacionClave)) {
                         JOptionPane.showMessageDialog(null, "Clave establecida con exito.");
                         this.clave = claveNueva;
-                        JOptionPane.showMessageDialog(null, "Usuario: " + usuario + " ha actualizado la clave de forma correcta");
+                        JOptionPane.showMessageDialog(null, "Usuario: " + tecnico + " ha actualizado la clave de forma correcta");
                         return;
                     } else {
                         String[] opciones = {"Confirmar de nuevo la clave", "Cancelar"};
@@ -197,7 +197,7 @@ public class Usuario {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-        JOptionPane.showMessageDialog(null, "Usuario: " + usuario + " se ha actualizado el nombre de forma correcta");
+        JOptionPane.showMessageDialog(null, "Usuario: " + tecnico + " se ha actualizado el nombre de forma correcta");
 
     }
 
@@ -206,8 +206,8 @@ public class Usuario {
     }
 
     public void setUsuario(String nuevoUsuario) {
-        this.usuario = nuevoUsuario;
-        JOptionPane.showMessageDialog(null, "Usuario: " + usuario + " se ha actualizado el usuario de forma correcta.");
+        this.tecnico = nuevoUsuario;
+        JOptionPane.showMessageDialog(null, "Usuario: " + tecnico + " se ha actualizado el usuario de forma correcta.");
 
     }
 

@@ -19,8 +19,7 @@ public class Grupo3ProyectoElectroComp {
             if (usuarioAutenticado != null && usuarioAutenticado.getRol() == Rol.Administrador) {
                 continuarSistema = Gestion.mostrarMenuAdministrador();
             } else if (usuarioAutenticado != null && usuarioAutenticado.getRol() == Rol.Tecnico) {
-                JOptionPane.showMessageDialog(null, "El rol del usuario no tiene un menu asignado aun. Se cerrara el sistema");
-                continuarSistema = false;
+                continuarSistema = Gestion.mostrarMenuTecnico();
             } else if (usuarioAutenticado == null) {
                 continuarSistema = true;
             } else {
