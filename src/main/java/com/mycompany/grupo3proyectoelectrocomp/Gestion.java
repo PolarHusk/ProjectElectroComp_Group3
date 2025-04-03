@@ -19,21 +19,42 @@ public class Gestion {
         usuarios[1] = new Usuario("Samuel", "sam123", Rol.Tecnico, "samp");
         usuarios[2] = new Usuario("Juan", "juan123", Rol.Tecnico, "juanp");
         usuarios[3] = new Usuario("Angeles", "ang123", Rol.Tecnico, "angep");
+        usuarios[4] = new Usuario("Francisco", "fcalde123@", Rol.Administrador, "francalde");
 
-        clientes[0] = new Clientes("123456", "Alexander", "8888-8888", "dcalderon@ufide.ac.cr", TipoCliente.Premium);
-        clientes[1] = new Clientes("1234567", "Helena", "8888-8889", "hfide@ufide.ac.cr", TipoCliente.Oro);
+        clientes[0] = new Clientes("12345324", "Alexander", "8888-8888", "dcalderon@ufide.ac.cr", TipoCliente.Premium);
+        clientes[1] = new Clientes("1236778", "Helena", "8888-8889", "hfide@ufide.ac.cr", TipoCliente.Oro);
+        clientes[2] = new Clientes("123445", "Marcos", "8567-7789", "mfide@ufide.ac.cr", TipoCliente.Premium);
+        clientes[3] = new Clientes("12345", "Maria", "8668-0089", "mari@ufide.ac.cr", TipoCliente.Oro);
+
+        clientes[4] = new Clientes("89078", "Mario", "8668-1589", "supermario@ufide.ac.cr", TipoCliente.Platino);
+        clientes[5] = new Clientes("12123", "Julio", "8668-3290", "donjulio@ufide.ac.cr", TipoCliente.Oro);
+        clientes[6] = new Clientes("11871", "Thor", "7777-7777", "thor@ufide.ac.cr", TipoCliente.Oro);
+        clientes[7] = new Clientes("2342334", "Loki", "3758-0089", "loki@ufide.ac.cr", TipoCliente.Platino);
 
         ordenes[0] = new Ordenes(clientes[0], usuarios[1], TipoDispositivo.Laptop, "HP", "Victus 16", "Fallo en Windows");
-        ordenes[1] = new Ordenes(clientes[1], usuarios[2], TipoDispositivo.Tablet, "Samsung", "S23", "Fallo de Pantalla");
+        ordenes[1] = new Ordenes(clientes[1], usuarios[2], TipoDispositivo.Celular, "Samsung", "S23", "Fallo de Pantalla");
+        ordenes[2] = new Ordenes(clientes[2], usuarios[3], TipoDispositivo.Tablet, "Apple", "Ipad Pro", "Malo cargador");
+        ordenes[3] = new Ordenes(clientes[3], usuarios[3], TipoDispositivo.Tablet, "Samsung", "Tablet S8 FE", "Lapiz malo");
+        ordenes[4] = new Ordenes(clientes[4], usuarios[2], TipoDispositivo.PC, "ASUS", "Monitor IPS", "Pixeles quemados");
+        ordenes[5] = new Ordenes(clientes[5], usuarios[1], TipoDispositivo.PC, "Dell", "Teclado", "Flechas direccionales malas");
+        ordenes[6] = new Ordenes(clientes[6], usuarios[1], TipoDispositivo.PC, "Logitech", "Mouse", "No sirve dongle inalambrico");
+        ordenes[7] = new Ordenes(clientes[7], usuarios[2], TipoDispositivo.PC, "Razer", "Audifonos Kaira", "Microfono malo");
+        ordenes[8] = new Ordenes(clientes[0], usuarios[3], TipoDispositivo.PC, "AOC", "Monitor", "Parlantes de pantalla malos");
+        ordenes[9] = new Ordenes(clientes[1], usuarios[3], TipoDispositivo.PC, "Razer", "Tenkeylees V5", "Puerto USB-C en mal estado");
+        ordenes[10] = new Ordenes(clientes[2], usuarios[2], TipoDispositivo.Celular, "Samsung", "S25 Ultra", "Sobrecalentamiento");
+        ordenes[11] = new Ordenes(clientes[3], usuarios[1], TipoDispositivo.PC, "Playstation", "PS5", "Sobrecalentamiento");
+        ordenes[12] = new Ordenes(clientes[4], usuarios[1], TipoDispositivo.PC, "Nintendo", "Nintendo Switch 2", "Joycons malos");
+        ordenes[13] = new Ordenes(clientes[5], usuarios[2], TipoDispositivo.Celular, "Apple", "IPhone 15", "Error en icloud");
+        ordenes[14] = new Ordenes(clientes[6], usuarios[3], TipoDispositivo.PC, "Toshiba", "Laptop", "Error en sistema operativo(UNRECOVERABLE)");
 
-        numeroClientes = 2;
-        numeroUsuarios = 4;
-        numeroOrdenes = 2;
+        numeroClientes = 8;
+        numeroUsuarios = 5;
+        numeroOrdenes = 15;
 
         for (int i = 0; i < numeroOrdenes; i++) {
             for (int j = 0; j < numeroClientes; j++) {
                 if (clientes[j].getID().equals(ordenes[i].getCliente().getID())) {
-                    clientes[i].agregarOrden(ordenes[i]);
+                    clientes[j].agregarOrden(ordenes[i]);
                     break;
                 }
             }
@@ -702,10 +723,10 @@ public class Gestion {
     }
 
     public static boolean mostrarMenuTecnico() {
-        
+
         JOptionPane.showMessageDialog(null, "Menu del tecnico en Construccion. Volviendo al inicio de sesion");
         return true;
-        
+
 //        int opcion;
 //        do {
 //
