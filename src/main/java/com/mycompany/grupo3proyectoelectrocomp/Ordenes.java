@@ -14,7 +14,7 @@ public class Ordenes {
     private String problema;
     private EstadoOrden estado;
     private LocalTime horaOrden;
-    private static int contadorOrden = 3003;
+    private static int contadorOrden = 3000;
 
     // Constructor
     public Ordenes(Clientes cliente, Usuario usuario, TipoDispositivo dispositivo, String marca, String modelo, String problema) {
