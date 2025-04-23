@@ -99,12 +99,12 @@ public class Clientes {
                     this.correo = correo;
                     break;
                 } else {
-                    JOptionPane.showMessageDialog(null, "Correo inválido. Asegúrate de que el correo contenga un punto después de '@'.");
+                    JOptionPane.showMessageDialog(null, "Correo invalido. Asegurate de que el correo contenga un punto después de '@'.");
                     correo = JOptionPane.showInputDialog("Ingrese el correo electrónico:");
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "Correo inválido. Asegúrate de que el correo contenga '@'.");
-                correo = JOptionPane.showInputDialog("Ingrese el correo electrónico:");
+                JOptionPane.showMessageDialog(null, "Correo invalido. Asegurate de que el correo contenga '@'.");
+                correo = JOptionPane.showInputDialog("Ingrese el correo electronico:");
             }
         }
 

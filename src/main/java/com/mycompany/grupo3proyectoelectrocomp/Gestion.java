@@ -219,7 +219,7 @@ public class Gestion {
 
     public static void agregarUsuario() {
         if (numeroUsuarios >= usuarios.length) {
-            JOptionPane.showMessageDialog(null, "Límite de usuarios alcanzado (20 usuarios).");
+            JOptionPane.showMessageDialog(null, "Limite de usuarios alcanzado (20 usuarios).");
         }
 
         String usuarioNuevo = JOptionPane.showInputDialog("Ingrese el nombre de usuario:");
@@ -314,7 +314,7 @@ public class Gestion {
 
     public static void crearOrden() {
         if (numeroOrdenes >= ordenes.length) {
-            JOptionPane.showMessageDialog(null, "Límite de órdenes alcanzado (120 órdenes).");
+            JOptionPane.showMessageDialog(null, "Limite de órdenes alcanzado (120 ordenes).");
             return;
         }
         String clienteID;
@@ -349,7 +349,7 @@ public class Gestion {
             } else if (clienteSeleccionado.getNumeroOrdenes() >= 4) {
                 String opciones[] = {"Ingresar otro ID de Cliente", "Cancelar"};
                 int opcion = JOptionPane.showOptionDialog(null,
-                        "El cliente ya ha ingresado 4 órdenes.",
+                        "El cliente ya ha ingresado 4 ordenes.",
                         "Limite de ordenes por cliente alcanzado",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.WARNING_MESSAGE,
@@ -386,7 +386,7 @@ public class Gestion {
             if (usuarioAsignado == null) {
                 String opciones[] = {"Ingresar Otro Codigo", "Cancelar"};
                 int opcion = JOptionPane.showOptionDialog(null,
-                        "El codigo no pertenece a ningún tecnico.",
+                        "El codigo no pertenece a ningun tecnico.",
                         "Error al asignar un tecnico",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.WARNING_MESSAGE,
@@ -737,9 +737,9 @@ public class Gestion {
         String filtroCodigoTecnico = "Todos";
 
         while (true) {
-            String filtros = "Filtros del cliente " + "\t" + "Filtros de la Orden " + "\t" + "Filtros del Tecnico " + "\n"
-                    + "ID: " + filtroIDCliente + "\t" + " Tipo: " + filtroTipoDispositivo + "\t" + " Codigo: " + filtroCodigoTecnico + "\n"
-                    + "Tipo Cliente: " + filtroTipoCliente + "\t" + " Estado: " + filtroEstadoOrden + "\n";
+            String filtros = "Filtros del cliente " + "\t       " + " |Filtros de la Orden " + "\t" + "|Filtros del Tecnico " + "\n"
+                    + "ID:   " + filtroIDCliente + "\t              " + "       |Tipo:  " + filtroTipoDispositivo + "\t       " + "      |Codigo:  " + filtroCodigoTecnico + "\n"
+                    + "Tipo Cliente: " + filtroTipoCliente + "\t" + "     |Estado: " + filtroEstadoOrden + "\n";
 
             String filtrar[] = {"Filtros del Cliente", "Filtros de la orden", "Filtro del Tecnico", "Generar Reporte"};
 
@@ -798,7 +798,7 @@ public class Gestion {
 
                 case 2:
                     String tecnicoBusqueda;
-                    
+
                     boolean tecnicoEncontrado = false; // Variable para controlar si el tecnico fue encontrado pero no tiene ordenes en estado cerrado 
 
                     tecnicoBusqueda = JOptionPane.showInputDialog(
@@ -837,7 +837,7 @@ public class Gestion {
                                     + " [Tipo de cliente]: " + ordenFiltrada.getCliente().getTipo()
                                     + " [Tipo de dispositivo]: " + ordenFiltrada.getDispositivo()
                                     + " [Estado]: " + ordenFiltrada.getEstado()
-                                    + " [Código del técnico]: " + ordenFiltrada.getUsuario().getCodigo()
+                                    + " [Codigo del tecnico]: " + ordenFiltrada.getUsuario().getCodigo()
                                     + " [Precio]: $" + ordenFiltrada.getPrecio());
 
                             total += ordenFiltrada.getPrecio();
