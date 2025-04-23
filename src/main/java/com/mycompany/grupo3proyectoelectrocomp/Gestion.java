@@ -669,7 +669,7 @@ public class Gestion {
     }
 
     public static void buscarUsuario() {
-        String opcionesBusqueda[] = {"Buscar por Usuario", "Buscar por Codigo"};
+        String opcionesBusqueda[] = {"Buscar por Usuario", "Buscar por Codigo", "Cancelar"};
 
         int numeroBusqueda = JOptionPane.showOptionDialog(
                 null,
@@ -730,7 +730,128 @@ public class Gestion {
     }
 
     public static void generarReportes() {
-        JOptionPane.showMessageDialog(null, "Generacion de reportes se encuentra en construccion");
+        String filtroIDCliente = "Todos";
+        String filtroTipoCliente = "Todos";
+        String filtroTipoDispositivo = "Todos";
+        String filtroEstadoOrden = "Todos";
+        String filtroCodigoTecnico = "Todos";
+
+        while (true) {
+            String filtros = "Filtros del cliente " + "\t" + "Filtros de la Orden " + "\t" + "Filtros del Tecnico " + "\n"
+                    + "ID: " + filtroIDCliente + "\t" + " Tipo: " + filtroTipoDispositivo + "\t" + " Codigo: " + filtroCodigoTecnico + "\n"
+                    + "Tipo Cliente: " + filtroTipoCliente + "\t" + " Estado: " + filtroEstadoOrden + "\n";
+
+            String filtrar[] = {"Filtros del Cliente", "Filtros de la orden", "Filtro del Tecnico", "Generar Reporte"};
+
+            int opt = JOptionPane.showOptionDialog(null, filtros, "Filtros del reporte", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, filtrar, filtrar[0]);
+
+            switch (opt) {
+                case 0:
+
+                    String clienteBusqueda;
+
+                    boolean clienteEncontrado = false; // Variable de control para identificar si el cliente fue encontrado pero no tiene ordenes cerradas
+
+                    clienteBusqueda = JOptionPane.showInputDialog(
+                            "Ingrese el ID del cliente a buscar:");
+
+                    if (clienteBusqueda != null && !clienteBusqueda.isEmpty()) {
+                        for (int i = 0; i < numeroClientes; i++) {
+                            if (clienteBusqueda.equals(clientes[i].getID())) {
+                                filtroIDCliente = clienteBusqueda;
+                                clienteEncontrado = true;
+                            }
+                        }
+                    }
+                    if (!clienteEncontrado) {
+                        System.out.println("Cliente no encontrado. Se asignara[Todos]");
+                        filtroIDCliente = "Todos";
+                    }
+
+                    String tiposCliente[] = {"Premium", "Platino", "Oro", "Todos"};
+                    int tipoFiltrado = JOptionPane.showOptionDialog(null, "Filtro del Tipo de cliente", "Filtros del reporte",
+                            JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, tiposCliente, tiposCliente[3]);
+                    if (tipoFiltrado != -1) {
+                        filtroTipoCliente = tiposCliente[tipoFiltrado];
+                    }
+                    break;
+
+                case 1:
+
+                    String tiposDispositivos[] = {"Laptop", "PC", "Celular", "Tablet", "Todos"};
+                    int tipoDispositivoFiltrado = JOptionPane.showOptionDialog(null,
+                            "Filtros de Tipo de Dispositivo", "Filtros del reporte",
+                            JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, tiposDispositivos, tiposDispositivos[4]);
+
+                    if (tipoDispositivoFiltrado != -1) {
+                        filtroTipoDispositivo = tiposDispositivos[tipoDispositivoFiltrado];
+                    }
+
+                    String estadosOrden[] = {"Reparada", "Devolucion", "Todos"};
+                    int estadoFiltrado = JOptionPane.showOptionDialog(null, "Filtros de Estado", "Filtros del Reporte", JOptionPane.DEFAULT_OPTION,
+                            JOptionPane.INFORMATION_MESSAGE, null, estadosOrden, estadosOrden[2]);
+
+                    if (estadoFiltrado != -1) {
+                        filtroEstadoOrden = estadosOrden[estadoFiltrado];
+                    }
+                    break;
+
+                case 2:
+                    String tecnicoBusqueda;
+                    
+                    boolean tecnicoEncontrado = false; // Variable para controlar si el tecnico fue encontrado pero no tiene ordenes en estado cerrado 
+
+                    tecnicoBusqueda = JOptionPane.showInputDialog(
+                            "Ingrese el ID del cliente a buscar:");
+
+                    if (tecnicoBusqueda != null && !tecnicoBusqueda.isEmpty()) {
+                        for (int i = 0; i < numeroClientes; i++) {
+                            if (tecnicoBusqueda.equals(clientes[i].getID())) {
+                                filtroCodigoTecnico = tecnicoBusqueda;
+                                tecnicoEncontrado = true;
+                            }
+                        }
+                    }
+                    if (!tecnicoEncontrado) {
+                        System.out.println("Tecnico no encontrado. Se asginara [Todos]");
+                        filtroIDCliente = "Todos";
+                    }
+                    break;
+                case 3:
+                    double total = 0;
+
+                    boolean filtrosValidos = false; // Variable de control para saber si los filtros seleccionados contienen al menos una orden (Reparada o Devolucion)
+
+                    for (int i = 0; i < numeroOrdenes; i++) {
+                        Ordenes ordenFiltrada = ordenes[i];
+                        boolean estadoCerrado = (ordenFiltrada.getEstado() == EstadoOrden.Reparada || ordenFiltrada.getEstado() == EstadoOrden.Devolucion);
+                        boolean IDfiltro = filtroIDCliente.equals("Todos") || ordenFiltrada.getCliente().getID().equals(filtroIDCliente);
+                        boolean TipoClienteFiltro = filtroTipoCliente.equals("Todos") || ordenFiltrada.getCliente().getTipo().toString().equals(filtroTipoCliente);
+                        boolean TipoDispositivoFiltro = filtroTipoDispositivo.equals("Todos") || ordenFiltrada.getDispositivo().toString().equals(filtroTipoDispositivo);
+                        boolean EstadoOrdenFiltro = filtroEstadoOrden.equals("Todos") || ordenFiltrada.getEstado().toString().equals(filtroEstadoOrden);
+                        boolean tecnicoFiltro = filtroCodigoTecnico.equals("Todos") || ordenFiltrada.getUsuario().getCodigo().equals(filtroCodigoTecnico);
+
+                        if (estadoCerrado && IDfiltro && TipoClienteFiltro && TipoDispositivoFiltro && EstadoOrdenFiltro && tecnicoFiltro) {
+                            filtrosValidos = true;
+                            System.out.println("[Id cliente]: " + ordenFiltrada.getCliente().getID()
+                                    + " [Tipo de cliente]: " + ordenFiltrada.getCliente().getTipo()
+                                    + " [Tipo de dispositivo]: " + ordenFiltrada.getDispositivo()
+                                    + " [Estado]: " + ordenFiltrada.getEstado()
+                                    + " [Código del técnico]: " + ordenFiltrada.getUsuario().getCodigo()
+                                    + " [Precio]: $" + ordenFiltrada.getPrecio());
+
+                            total += ordenFiltrada.getPrecio();
+                        }
+                    }
+                    if (!filtrosValidos) {
+                        System.out.println("No se encontraron ordenes cerradas con los filtros seleccionados");
+                        return;
+                    }
+                    System.out.println("[Total]: $" + total);
+                    return;
+            }
+        }
+
     }
 
     public static boolean mostrarMenuAdministrador() {
