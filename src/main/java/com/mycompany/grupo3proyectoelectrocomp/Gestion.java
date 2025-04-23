@@ -576,6 +576,98 @@ public class Gestion {
         }
     }
 
+    public static void buscarOrdenServicioTecnico(Usuario usuarioAutenticado) {
+
+        while (true) {
+            int numeroOrdenBusqueda = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el numero de orden a buscar:"));
+            boolean ordenEncontrada = false;
+
+            for (int i = 0; i < numeroOrdenes; i++) {
+                if (numeroOrdenBusqueda == ordenes[i].getNumeroOrden()) {
+                    ordenEncontrada = true;
+                    if (!ordenes[i].getUsuario().getCodigo().equals(usuarioAutenticado.getCodigo())) {
+                        String opciones[] = {"Ingresar otro numero de orden", "Cancelar"};
+                        int opt = JOptionPane.showOptionDialog(null, "Usted no tiene permiso de ingresar a la orden de servicio con el numero:" + ordenes[i].getNumeroOrden(),
+                                "Acceso Denegado", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, opciones, opciones[1]);
+                        if (opt == 0) {
+                            break;
+                        } else {
+                            return;
+                        }
+
+                    }
+                    System.out.println(ordenes[i].mostrarInfo());
+                    String opciones[] = {"Cerrar Orden", "Cancelar"};
+                    int opcion = JOptionPane.showOptionDialog(null, "Se encontro la orden: " + ordenes[i].getNumeroOrden(), "Seleccione una opcion", JOptionPane.DEFAULT_OPTION,
+                            JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[1]);
+
+                    if (opcion == 0) {
+                        String solucionOrden = JOptionPane.showInputDialog("Ingrese la solucion de la orden:");
+                        int costoOrden = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el costo total de la orden: "));
+
+                        String opcionesEstado[] = {"Reparada", "Devolucion"};
+                        int numeroEstado = JOptionPane.showOptionDialog(null,
+                                "Seleccione el estado de la orden: ", "Estado de la Orden", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcionesEstado, opcionesEstado[1]);
+                        if (numeroEstado == 0) {
+                            ordenes[i].setEstado(EstadoOrden.Reparada);
+                        } else {
+                            ordenes[i].setEstado(EstadoOrden.Devolucion);
+
+                        }
+                        Clientes cliente = ordenes[i].getCliente();
+                        TipoCliente tipoCliente = cliente.getTipo();
+                        double descuento = 0;
+
+                        if (ordenes[i].getEstado() == EstadoOrden.Reparada) {
+                            if (tipoCliente == TipoCliente.Premium) {
+                                descuento = 0.05;
+                            } else if (tipoCliente == TipoCliente.Platino) {
+                                descuento = 0.03;
+                            }
+                        } else if (ordenes[i].getEstado() == EstadoOrden.Devolucion) {
+                            if (tipoCliente == TipoCliente.Premium) {
+                                descuento = 0.75;
+                            } else if (tipoCliente == TipoCliente.Platino) {
+                                descuento = 0.50;
+                            } else if (tipoCliente == TipoCliente.Oro) {
+                                descuento = 0.25;
+                            }
+                        }
+
+                        double precioTotal = costoOrden - (costoOrden * descuento);
+                        ordenes[i].setSolucion(solucionOrden);
+                        ordenes[i].setCosto(costoOrden);
+                        ordenes[i].setPrecio(precioTotal);
+
+                        System.out.println(ordenes[i].mostrarInfoOrdenCerrada());
+                        System.out.println();
+                        return;
+                    }
+                    return;
+                }
+            }
+            // ORDEN NO ENCONTRADA
+            if (!ordenEncontrada) {
+                JOptionPane.showMessageDialog(null, "La orden de servicio con el numero: " + numeroOrdenBusqueda
+                        + " no se encuentra registrado en el sistema.");
+
+                String opcionesBuscarOrden[] = {"Ingresar otro numero", "Cancelar"};
+                int opcion = JOptionPane.showOptionDialog(null, "Orden de Servicio No encontrada", "Escoja una opcion", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, opcionesBuscarOrden, opcionesBuscarOrden[0]);
+
+                switch (opcion) {
+                    case 0:
+                        continue;
+                    case 1:
+                        return;
+                    case -1:
+                        break;
+                }
+
+            }
+
+        }
+    }
+
     public static void buscarUsuario() {
         String opcionesBusqueda[] = {"Buscar por Usuario", "Buscar por Codigo"};
 
@@ -722,42 +814,51 @@ public class Gestion {
 
     }
 
-    public static boolean mostrarMenuTecnico() {
+    public static boolean mostrarMenuTecnico(Usuario usuarioAutenticado) {
+        int opcion;
+        do {
 
-        JOptionPane.showMessageDialog(null, "Menu del tecnico en Construccion. Volviendo al inicio de sesion");
-        return true;
+            opcion = Integer.parseInt(JOptionPane.showInputDialog("""
+                                                                  BIENVENIDO A LA TIENDA DE ELECTRONICOS ElectroComp
+                                                                                 1- Mostrar ordenes de servicio
+                                                                                 2- Buscar Orden de Servicio
+                                                                                 3- Cerrar sesion
+                                                                                 4- Salir del Sistema                         
+                                                                  """));
 
-//        int opcion;
-//        do {
-//
-//            opcion = Integer.parseInt(JOptionPane.showInputDialog("""
-//                                                                  BIENVENIDO A LA TIENDA DE ELECTRONICOS ElectroComp
-//                                                                                 1- Mostrar ordenes de servicio
-//                                                                                 2- Buscar Orden de Servicio
-//                                                                                 3- Cerrar sesion
-//                                                                                 4- Salir del Sistema                         
-//                                                                  """));
-//
-//            switch (opcion) {
-//
-//                case 0:
-//                    JOptionPane.showMessageDialog(null, "Mostrando Ordenes.... ");
-//                    break;
-//
-//                case 1:
-//                    JOptionPane.showMessageDialog(null, "Buscar orden de servicio....");
-//                    mostrarUsuarios();
-//                    break;
-//
-//                case 2:
-//                    JOptionPane.showMessageDialog(null, "Cerrar Sesion....");
-//                    mostrarOrdenes();
-//                    break;
-//                case 3:
-//                    JOptionPane.showMessageDialog(null, "Salir del sistema...");
-//
-//            }
-//        } while (true);
+            switch (opcion) {
+
+                case 1:
+                    JOptionPane.showMessageDialog(null, "Mostrando Ordenes.... ");
+
+                    boolean tieneOrdenes = false;
+
+                    for (int i = 0; i < numeroOrdenes; i++) {
+                        if (usuarioAutenticado.getCodigo().equals(ordenes[i].getUsuario().getCodigo())) {
+                            System.out.println(ordenes[i].mostrarInfo());
+                            tieneOrdenes = true;
+                        }
+                    }
+
+                    if (!tieneOrdenes) {
+                        JOptionPane.showMessageDialog(null, "El usuario: " + usuarioAutenticado.getNombre() + " no tiene ordenes asignadas.");
+                    }
+                    break;
+                case 2:
+                    JOptionPane.showMessageDialog(null, "Buscar orden de servicio....");
+                    buscarOrdenServicioTecnico(usuarioAutenticado);
+                    break;
+
+                case 3:
+                    JOptionPane.showMessageDialog(null, "Cerrar Sesion....");
+                    return true;
+                case 4:
+                    JOptionPane.showMessageDialog(null, "Salir del sistema...");
+                    return false;
+                default:
+                    return false;
+            }
+        } while (true);
     }
 
     private static String solicitarClave() {

@@ -53,7 +53,7 @@ public class Usuario {
             while (intentos < 3) {
                 String claveUsuario = JOptionPane.showInputDialog("Ingrese su clave de ingreso: ");
                 if (claveUsuario.equals(usuarioActual.getClave())) {
-                    JOptionPane.showMessageDialog(null, "Inicio de sesion exitoso con el usuario: " + usuarioActual.getNombre() + "\nRol: " + usuarioActual.getRol());
+                    System.out.println("Inicio de sesion exitoso con el usuario: " + usuarioActual.getUsuario() + "\nRol: " + usuarioActual.getRol() + "\nCodigo: " + usuarioActual.getCodigo());
                     return usuarioActual;
                 } else {
                     intentos++;
