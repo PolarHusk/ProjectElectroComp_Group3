@@ -19,7 +19,7 @@ public class Grupo3ProyectoElectroComp {
             if (usuarioAutenticado != null && usuarioAutenticado.getRol() == Rol.Administrador) {
                 continuarSistema = Gestion.mostrarMenuAdministrador();
             } else if (usuarioAutenticado != null && usuarioAutenticado.getRol() == Rol.Tecnico) {
-                continuarSistema = Gestion.mostrarMenuTecnico();
+                continuarSistema = Gestion.mostrarMenuTecnico(usuarioAutenticado);
             } else if (usuarioAutenticado == null) {
                 continuarSistema = true;
             } else {

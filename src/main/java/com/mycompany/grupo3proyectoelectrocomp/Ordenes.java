@@ -15,6 +15,9 @@ public class Ordenes {
     private EstadoOrden estado;
     private LocalTime horaOrden;
     private static int contadorOrden = 3000;
+    private String solucion;
+    private double costo;
+    private double precio;
 
     // Constructor
     public Ordenes(Clientes cliente, Usuario usuario, TipoDispositivo dispositivo, String marca, String modelo, String problema) {
@@ -31,6 +34,30 @@ public class Ordenes {
 
     }
 
+    public String getSolucion() {
+        return solucion;
+    }
+
+    public void setSolucion(String solucion) {
+        this.solucion = solucion;
+    }
+
+    public double getCosto() {
+        return costo;
+    }
+
+    public void setCosto(double costo) {
+        this.costo = costo;
+    }
+
+    public double getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(double precio) {
+        this.precio = precio;
+    }
+
     // Comportamientos
     public String mostrarInfo() {
         return "Orden número: " + numeroOrden + "\n"
@@ -42,6 +69,22 @@ public class Ordenes {
                 + "Problema: " + problema + "\n"
                 + "Estado: " + estado + "\n"
                 + "Hora de la orden: " + horaOrden + "\n"
+                + "--------------------------------------------";
+    }
+
+    public String mostrarInfoOrdenCerrada() {
+        return "Orden número: " + numeroOrden + "\n"
+                + "Nombre del Cliente: " + cliente.getNombre() + "\n"
+                + "Técnico asignado: " + tecnico.getNombre() + "\n"
+                + "Dispositivo: " + dispositivo + "\n"
+                + "Marca: " + marca + "\n"
+                + "Modelo: " + modelo + "\n"
+                + "Problema: " + problema + "\n"
+                + "Estado: " + estado + "\n"
+                + "Hora de la orden: " + horaOrden + "\n"
+                + "Solucion: " + solucion + "\n"
+                + "Costo de la orden(Sin Descuento): " + costo + "\n"
+                + "Precio total con descuento: " + precio + "\n"
                 + "--------------------------------------------";
     }
 
